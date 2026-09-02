@@ -1,0 +1,24 @@
+{
+  "name": "futurama",
+  "version": "1.0.0",
+  "description": "Main branch for the Futurama App - an app for finding Futurama characters by filtering by gender, status, species, and name (free-text search).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HaLund/Futurama.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HaLund/Futurama/issues"
+  },
+  "homepage": "https://github.com/HaLund/Futurama#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
