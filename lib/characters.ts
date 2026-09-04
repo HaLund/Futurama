@@ -75,8 +75,15 @@ async function connect() {
           status nvarchar(20) NOT NULL,
           species nvarchar(50) NOT NULL,
           createdAt datetime2(7) NOT NULL,
-          image nvarchar(1000) NOT NULL
+          image nvarchar(max) NOT NULL
         )
+      `);
+      await pool.request().query(`
+       IF EXISTS (
+         SELECT 1 FROM sys.columns
+         WHERE object_id = OBJECT_ID(N'dbo.Characters') AND name = N'image'
+       )
+       ALTER TABLE dbo.Characters ALTER COLUMN image nvarchar(max) NOT NULL
       `);
       return pool;
     })().catch((error) => {
@@ -100,7 +107,7 @@ export async function createCharacter(value: Omit<Character, "id">): Promise<Cha
     .input("status", sql.NVarChar(20), value.status)
     .input("species", sql.NVarChar(50), value.species)
     .input("createdAt", sql.DateTime2, new Date(value.createdAt))
-    .input("image", sql.NVarChar(1000), value.image)
+    .input("image", sql.NVarChar(sql.MAX), value.image)
     .query(`
       INSERT INTO dbo.Characters (id, name, gender, status, species, createdAt, image)
       OUTPUT INSERTED.*
@@ -120,7 +127,7 @@ export async function updateCharacter(value: Character): Promise<Character | und
     .input("status", sql.NVarChar(20), value.status)
     .input("species", sql.NVarChar(50), value.species)
     .input("createdAt", sql.DateTime2, new Date(value.createdAt))
-    .input("image", sql.NVarChar(1000), value.image)
+    .input("image", sql.NVarChar(sql.MAX), value.image)
     .query(`
       UPDATE dbo.Characters
       SET name = @name, gender = @gender, status = @status,
