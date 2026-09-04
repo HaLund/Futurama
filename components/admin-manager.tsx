@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 import type { Character } from "../lib/characters";
 
 const empty: Omit<Character, "id"> = { name: "", gender: "UNKNOWN", status: "UNKNOWN", species: "HUMAN", createdAt: new Date().toISOString(), image: "" };
+const maxImageSize = 5 * 1024 * 1024;
 
 export default function AdminManager() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -38,10 +39,34 @@ export default function AdminManager() {
     if (!response.ok) { setError("Could not save character."); return; }
     setForm(empty); setError(""); await load();
   }
+  function uploadImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      setError("Please choose an image file.");
+      return;
+    }
+    if (file.size > maxImageSize) {
+      setError("Images must be 5 MB or smaller.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = reader.result;
+      if (typeof image !== "string") {
+        setError("Could not read the selected image.");
+        return;
+      }
+      setForm((current) => ({ ...current, image }));
+      setError("");
+    };
+    reader.onerror = () => setError("Could not read the selected image.");
+    reader.readAsDataURL(file);
+  }
   async function remove(id: number) {
     if (!window.confirm("Delete this character?")) return;
     await fetch(`/api/admin/characters?id=${id}`, { method: "DELETE" }); await load();
   }
   if (!loggedIn) return <main className="admin-shell"><form className="admin-login" onSubmit={login}><p className="eyebrow">Restricted area</p><h1>Admin login</h1><input aria-label="Username" placeholder="Username" value={credentials.username} onChange={(e) => setCredentials({ ...credentials, username: e.target.value })} required /><input aria-label="Password" placeholder="Password" type="password" value={credentials.password} onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} required /><button type="submit">Sign in</button>{error && <p className="form-error">{error}</p>}</form></main>;
-  return <main className="admin-shell"><div className="admin-heading"><div><p className="eyebrow">Planet Express Academy</p><h1>Character database</h1></div><button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); setLoggedIn(false); }}>Sign out</button></div><form className="character-form" onSubmit={save}><h2>{"id" in form ? "Edit character" : "Add character"}</h2>{(["name", "gender", "status", "species", "image"] as const).map((key) => <input key={key} placeholder={key} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />)}<button type="submit">{"id" in form ? "Update" : "Create"}</button>{"id" in form && <button type="button" onClick={() => setForm(empty)}>Cancel</button>}{error && <p className="form-error">{error}</p>}</form><div className="admin-table">{items.map((character) => <div className="admin-row" key={character.id}><span>{character.name}</span><span>{character.species} / {character.status}</span><button onClick={() => setForm(character)}>Edit</button><button onClick={() => remove(character.id)}>Delete</button></div>)}</div></main>;
+  return <main className="admin-shell"><div className="admin-heading"><div><p className="eyebrow">Planet Express Academy</p><h1>Character database</h1></div><button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); setLoggedIn(false); }}>Sign out</button></div><form className="character-form" onSubmit={save}><h2>{"id" in form ? "Edit character" : "Add character"}</h2>{(["name", "gender", "status", "species"] as const).map((key) => <input key={key} placeholder={key} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />)}<div className="image-upload"><div className="image-preview">{form.image ? <img src={form.image} alt={`Preview of ${form.name || "character"}`} /> : <span>No image selected</span>}</div><label className="file-upload-button">Upload image<input key={form.image} type="file" accept="image/*" onChange={uploadImage} /></label>{!form.image && <span className="image-help">An image is required.</span>}</div><button type="submit">{"id" in form ? "Update" : "Create"}</button>{"id" in form && <button type="button" onClick={() => setForm(empty)}>Cancel</button>}{error && <p className="form-error">{error}</p>}</form><div className="admin-table">{items.map((character) => <div className="admin-row" key={character.id}><span>{character.name}</span><span>{character.species} / {character.status}</span><button onClick={() => setForm(character)}>Edit</button><button onClick={() => remove(character.id)}>Delete</button></div>)}</div></main>;
 }

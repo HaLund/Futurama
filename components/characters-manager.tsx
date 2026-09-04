@@ -55,6 +55,7 @@ export default function CharactersManager() {
           <a href="#about">About</a>
           <a href="#characters" aria-current="page">Characters</a>
           <a href="#contact">Contact</a>
+          <a href="/admin">Admin</a>
         </nav>
       </header>
 
