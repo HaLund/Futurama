@@ -98,6 +98,7 @@ h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
 .card-body button:hover, .card-body button:focus-visible { border-color: var(--aqua); color: var(--aqua); }
 
 .pagination { align-items: center; display: flex; gap: 8px; justify-content: center; padding: 32px 0 0; }
+.visually-hidden { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0 0 0 0); }
 .pagination button { color: var(--text); cursor: pointer; font: inherit; }
 .page-number, .page-arrow {
   background: transparent;
@@ -127,7 +128,7 @@ h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
 .image-preview span, .image-help { color: var(--muted); font-size: 13px; }
 .file-upload-button { background: transparent; border: 1px solid var(--border); border-radius: 7px; color: var(--text); cursor: pointer; font-weight: 700; padding: 11px 16px; text-align: center; }
 .file-upload-button:hover, .file-upload-button:focus-within { border-color: var(--aqua); color: var(--aqua); }
-.file-upload-button input { display: none; }
+.file-upload-input { display: none; }
 .form-error { color: #ff8d8d; grid-column: 1 / -1; margin: 0; }
 .admin-table { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
 .admin-row { align-items: center; border-bottom: 1px solid var(--border); display: grid; gap: 16px; grid-template-columns: 2fr 1fr auto auto; padding: 13px 16px; }
