@@ -67,6 +67,45 @@ export default function AdminManager() {
     if (!window.confirm("Delete this character?")) return;
     await fetch(`/api/admin/characters?id=${id}`, { method: "DELETE" }); await load();
   }
-  if (!loggedIn) return <main className="admin-shell"><form className="admin-login" onSubmit={login}><p className="eyebrow">Restricted area</p><h1>Admin login</h1><input aria-label="Username" placeholder="Username" value={credentials.username} onChange={(e) => setCredentials({ ...credentials, username: e.target.value })} required /><input aria-label="Password" placeholder="Password" type="password" value={credentials.password} onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} required /><button type="submit">Sign in</button>{error && <p className="form-error">{error}</p>}</form></main>;
-  return <main className="admin-shell"><div className="admin-heading"><div><p className="eyebrow">Planet Express Academy</p><h1>Character database</h1></div><button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); setLoggedIn(false); }}>Sign out</button></div><form className="character-form" onSubmit={save}><h2>{"id" in form ? "Edit character" : "Add character"}</h2>{(["name", "gender", "status", "species"] as const).map((key) => <input key={key} placeholder={key} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />)}<div className="image-upload"><div className="image-preview">{form.image ? <img src={form.image} alt={`Preview of ${form.name || "character"}`} /> : <span>No image selected</span>}</div><label className="file-upload-button">Upload image<input key={form.image} type="file" accept="image/*" onChange={uploadImage} /></label>{!form.image && <span className="image-help">An image is required.</span>}</div><button type="submit">{"id" in form ? "Update" : "Create"}</button>{"id" in form && <button type="button" onClick={() => setForm(empty)}>Cancel</button>}{error && <p className="form-error">{error}</p>}</form><div className="admin-table">{items.map((character) => <div className="admin-row" key={character.id}><span>{character.name}</span><span>{character.species} / {character.status}</span><button onClick={() => setForm(character)}>Edit</button><button onClick={() => remove(character.id)}>Delete</button></div>)}</div></main>;
+  if (!loggedIn) {
+    return (
+      <main className="admin-shell">
+        <form className="admin-login" onSubmit={login}>
+          <p className="eyebrow">Restricted area</p>
+          <h1>Admin login</h1>
+          <label htmlFor="username">Username</label>
+          <input id="username" placeholder="Username" value={credentials.username} onChange={(e) => setCredentials({ ...credentials, username: e.target.value })} required />
+          <label htmlFor="password">Password</label>
+          <input id="password" placeholder="Password" type="password" value={credentials.password} onChange={(e) => setCredentials({ ...credentials, password: e.target.value })} required />
+          <button type="submit">Sign in</button>{error && <p className="form-error">{error}</p>}
+        </form>
+      </main>
+    );
+  }
+  return <main className="admin-shell">
+    <div className="admin-heading">
+    <div>
+      <p className="eyebrow">Planet Express Academy</p>
+      <h1>Character database</h1>
+    </div>
+    <button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); setLoggedIn(false); }}>Sign out</button>
+    </div>
+    <form className="character-form" onSubmit={save}>
+      <h2>{"id" in form ? "Edit character" : "Add character"}</h2>
+      {(["name", "gender", "status", "species"] as const).map((key) => (
+        <div key={key}>
+          <label htmlFor={`character-${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
+          <input id={`character-${key}`} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />
+        </div>
+      ))}
+      <div className="image-upload">
+        <div className="image-preview">{form.image ? <img src={form.image} alt={`Preview of ${form.name || "character"}`} /> : <span>No image selected</span>}</div>
+        <label className="file-upload-button" htmlFor="character-image">Upload image</label>
+        <input className="file-upload-input" id="character-image" key={form.image} type="file" accept="image/*" onChange={uploadImage} />
+        {!form.image && <span className="image-help">An image is required.</span>}</div>
+        <button type="submit">{"id" in form ? "Update" : "Create"}</button>{"id" in form && <button type="button" onClick={() => setForm(empty)}>Cancel</button>}
+        {error && <p className="form-error">{error}</p>}</form>
+        <div className="admin-table">{items.map((character) => <div className="admin-row" key={character.id}><span>{character.name}</span><span>{character.species} / {character.status}</span>
+        <button onClick={() => setForm(character)}>Edit</button><button onClick={() => remove(character.id)}>Delete</button></div>)}</div>
+        </main>;
 }

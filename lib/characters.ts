@@ -122,7 +122,7 @@ export async function createCharacter(value: Omit<Character, "id">): Promise<Cha
 export async function updateCharacter(value: Character): Promise<Character | undefined> {
   const result = await (await connect()).request()
     .input("id", sql.Int, value.id)
-    .input("name", sql.NVarChar(200), value.name)
+    .input("Name", sql.NVarChar(200), value.name)
     .input("gender", sql.NVarChar(20), value.gender)
     .input("status", sql.NVarChar(20), value.status)
     .input("species", sql.NVarChar(50), value.species)
