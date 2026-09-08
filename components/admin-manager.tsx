@@ -99,7 +99,7 @@ export default function AdminManager() {
         </div>
       ))}
       <div className="image-upload">
-        <div className="image-preview">{form.image ? <img src={form.image} alt={`Preview of ${form.name || "character"}`} /> : <span>No image selected</span>}</div>
+        <div>{form.image ? <img src={form.image} alt={`Preview of ${form.name || "character"}`} /> : <span>No image selected</span>}</div>
         <label className="file-upload-button" htmlFor="character-image">Upload image</label>
         <input className="file-upload-input" id="character-image" key={form.image} type="file" accept="image/*" onChange={uploadImage} />
         {!form.image && <span className="image-help">An image is required.</span>}</div>
