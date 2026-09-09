@@ -14,10 +14,22 @@ function Logo() {
   );
 }
 
+function pageFromUrl() {
+  const value = Number(new URLSearchParams(window.location.search).get("page"));
+  return Number.isInteger(value) && value > 0 ? value : 1;
+}
+
 export default function CharactersManager() {
   const [characters, setCharacters] = useState<Character[]>([]);
   const [page, setPage] = useState(1);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const updatePageFromUrl = () => setPage(pageFromUrl());
+    updatePageFromUrl();
+    window.addEventListener("popstate", updatePageFromUrl);
+    return () => window.removeEventListener("popstate", updatePageFromUrl);
+  }, []);
 
   useEffect(() => {
     fetch("/api/characters")
@@ -36,14 +48,30 @@ export default function CharactersManager() {
         setError("Could not load characters. Please try again later.");
       });
   }, []);
-  const pageCount = Math.ceil(characters.length / charactersPerPage);
+  const pageCount = Math.max(1, Math.ceil(characters.length / charactersPerPage));
   const visibleCharacters = useMemo(
     () => characters.slice((page - 1) * charactersPerPage, page * charactersPerPage),
     [characters, page],
   );
 
+  useEffect(() => {
+    if (!characters.length || page <= pageCount) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("page", String(pageCount));
+    window.history.replaceState({}, "", url);
+    setPage(pageCount);
+  }, [characters.length, page, pageCount]);
+
   const goToPage = (nextPage: number) => {
-    setPage(Math.min(Math.max(nextPage, 1), pageCount));
+    const next = Math.min(Math.max(nextPage, 1), pageCount);
+    const url = new URL(window.location.href);
+    if (next === 1) {
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.set("page", String(next));
+    }
+    window.history.pushState({}, "", url);
+    setPage(next);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
