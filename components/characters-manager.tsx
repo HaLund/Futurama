@@ -39,7 +39,7 @@ export default function CharactersManager() {
   const pageCount = Math.ceil(characters.length / charactersPerPage);
   const visibleCharacters = useMemo(
     () => characters.slice((page - 1) * charactersPerPage, page * charactersPerPage),
-    [page],
+    [characters, page],
   );
 
   const goToPage = (nextPage: number) => {
