@@ -7,6 +7,7 @@ import type { Character } from "../lib/characters";
 const empty: Omit<Character, "id"> = { name: "", gender: "UNKNOWN", status: "UNKNOWN", species: "HUMAN", createdAt: new Date().toISOString(), image: "" };
 const maxImageSize = 5 * 1024 * 1024;
 const genderOptions = ["FEMALE", "MALE", "UNKNOWN"] as const;
+const statusOptions = ["ALIVE", "DEAD", "UNKNOWN"] as const;
 
 export default function AdminManager() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -99,6 +100,10 @@ export default function AdminManager() {
           {key === "gender" ? (
             <select id="character-gender" value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })} required>
               {genderOptions.map((gender) => <option key={gender} value={gender}>{gender}</option>)}
+            </select>
+          ) : key === "status" ? (
+            <select id="character-status" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} required>
+              {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
             </select>
           ) : (
             <input id={`character-${key}`} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />
