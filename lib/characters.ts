@@ -100,6 +100,13 @@ export async function readCharacters(): Promise<Character[]> {
   return result.recordset.map(asCharacter);
 }
 
+export async function readCharacter(id: number): Promise<Character | undefined> {
+  const result = await (await connect()).request()
+    .input("id", sql.Int, id)
+    .query("SELECT id, name, gender, status, species, createdAt, image FROM dbo.Characters WHERE id = @id");
+  return result.recordset[0] ? asCharacter(result.recordset[0]) : undefined;
+}
+
 export async function createCharacter(value: Omit<Character, "id">): Promise<Character> {
   const result = await (await connect()).request()
     .input("name", sql.NVarChar(200), value.name)

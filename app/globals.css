@@ -82,20 +82,43 @@ h1 { font-size: 30px; line-height: 1.1; margin: 0 0 9px; }
 .image-frame img { display: block; height: 100%; object-fit: cover; width: 100%; }
 .card-body { padding: 17px 16px 15px; }
 h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
-.card-body button {
+.dossier-link {
   background: transparent;
   border: 1px solid #555;
   border-radius: 11px;
   color: var(--text);
-  cursor: pointer;
+  display: block;
   font: inherit;
   font-size: 14px;
   font-weight: 700;
   padding: 14px 10px;
+  text-align: center;
+  text-decoration: none;
   text-transform: uppercase;
   width: 100%;
 }
-.card-body button:hover, .card-body button:focus-visible { border-color: var(--aqua); color: var(--aqua); }
+.dossier-link:hover, .dossier-link:focus-visible { border-color: var(--aqua); color: var(--aqua); }
+
+.dossier { padding-top: 32px; }
+.back-link { color: var(--aqua); display: inline-block; font-weight: 700; margin-bottom: 24px; text-decoration: none; }
+.back-link:hover, .back-link:focus-visible { color: white; }
+.dossier-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 1.4fr;
+  overflow: hidden;
+}
+.dossier-image { background: #202020; min-height: 420px; }
+.dossier-image img { display: block; height: 100%; object-fit: cover; width: 100%; }
+.dossier-body { padding: 38px; }
+.dossier-body h1 { font-size: 42px; margin-bottom: 36px; }
+.dossier-details { margin: 0; }
+.dossier-details > div { border-bottom: 1px solid var(--border); display: grid; gap: 20px; grid-template-columns: 120px 1fr; padding: 16px 0; }
+.dossier-details > div:first-child { border-top: 1px solid var(--border); }
+.dossier-details dt { color: var(--muted); font-weight: 700; }
+.dossier-details dd { margin: 0; }
 
 .pagination { align-items: center; display: flex; gap: 8px; justify-content: center; padding: 32px 0 0; }
 .visually-hidden { height: 1px; margin: -1px; overflow: hidden; position: absolute; width: 1px; clip: rect(0 0 0 0); }
@@ -146,6 +169,10 @@ h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
   nav a { font-size: 13px; }
   .content { padding: 0 16px 32px; }
   .character-grid { grid-template-columns: 1fr; }
+  .dossier-card { grid-template-columns: 1fr; }
+  .dossier-image { min-height: 280px; }
+  .dossier-body { padding: 24px; }
+  .dossier-body h1 { font-size: 32px; }
   .admin-shell { padding: 28px 16px; }
   .character-form, .admin-row { grid-template-columns: 1fr; }
   .admin-heading { align-items: flex-start; gap: 16px; }

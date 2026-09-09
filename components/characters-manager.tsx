@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { Character } from "../lib/characters";
 
 const charactersPerPage = 8;
@@ -103,7 +104,9 @@ export default function CharactersManager() {
               </div>
               <div className="card-body">
                 <h2>{character.name}</h2>
-                <button type="button">View dossier</button>
+                <Link className="dossier-link" href={`/characters/${character.id}`}>
+                  View Dossier
+                </Link>
               </div>
             </article>
           ))}
