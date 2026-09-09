@@ -8,6 +8,7 @@ const empty: Omit<Character, "id"> = { name: "", gender: "UNKNOWN", status: "UNK
 const maxImageSize = 5 * 1024 * 1024;
 const genderOptions = ["FEMALE", "MALE", "UNKNOWN"] as const;
 const statusOptions = ["ALIVE", "DEAD", "UNKNOWN"] as const;
+const speciesOptions = ["HUMAN", "MONSTER", "MUTANT", "ROBOT", "UNKNOWN"] as const;
 
 export default function AdminManager() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -104,6 +105,10 @@ export default function AdminManager() {
           ) : key === "status" ? (
             <select id="character-status" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} required>
               {statusOptions.map((status) => <option key={status} value={status}>{status}</option>)}
+            </select>
+          ) : key === "species" ? (
+            <select id="character-species" value={form.species} onChange={(e) => setForm({ ...form, species: e.target.value })} required>
+              {speciesOptions.map((species) => <option key={species} value={species}>{species}</option>)}
             </select>
           ) : (
             <input id={`character-${key}`} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />
