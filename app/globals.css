@@ -143,6 +143,8 @@ h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
 .admin-heading { align-items: center; display: flex; justify-content: space-between; margin-bottom: 26px; }
 .character-form { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; display: grid; gap: 10px; grid-template-columns: repeat(5, 1fr); margin-bottom: 24px; padding: 18px; }
 .character-form h2 { grid-column: 1 / -1; margin: 0; min-height: auto; }
+.character-form > div:not(.image-upload) { display: flex; flex-direction: column; gap: 6px; }
+.character-form > div:not(.image-upload) input, .character-form > div:not(.image-upload) select { width: 100%; }
 .character-form button { align-self: stretch; }
 .character-form button[type="button"] { background: transparent; color: var(--text); }
 .image-upload { display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1; }
