@@ -6,6 +6,7 @@ import type { Character } from "../lib/characters";
 
 const empty: Omit<Character, "id"> = { name: "", gender: "UNKNOWN", status: "UNKNOWN", species: "HUMAN", createdAt: new Date().toISOString(), image: "" };
 const maxImageSize = 5 * 1024 * 1024;
+const genderOptions = ["FEMALE", "MALE", "UNKNOWN"] as const;
 
 export default function AdminManager() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -95,7 +96,13 @@ export default function AdminManager() {
       {(["name", "gender", "status", "species"] as const).map((key) => (
         <div key={key}>
           <label htmlFor={`character-${key}`}>{key.charAt(0).toUpperCase() + key.slice(1)}</label>
-          <input id={`character-${key}`} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />
+          {key === "gender" ? (
+            <select id="character-gender" value={form.gender} onChange={(e) => setForm({ ...form, gender: e.target.value })} required>
+              {genderOptions.map((gender) => <option key={gender} value={gender}>{gender}</option>)}
+            </select>
+          ) : (
+            <input id={`character-${key}`} value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })} required />
+          )}
         </div>
       ))}
       <div className="image-upload">
