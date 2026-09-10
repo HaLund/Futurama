@@ -7,6 +7,35 @@ function secret() {
   return process.env.ADMIN_PASSWORD ?? "";
 }
 
+type AdminCredentials = {
+  username: string;
+  password: string;
+};
+
+type ConfiguredCredentials = {
+  username: string | undefined;
+  password: string | undefined;
+};
+
+function isAdminCredentials(value: unknown): value is AdminCredentials {
+  if (!value || typeof value !== "object") return false;
+  const credentials = value as Record<string, unknown>;
+  return typeof credentials.username === "string" && typeof credentials.password === "string";
+}
+
+export function authenticateAdmin(
+  credentials: unknown,
+  configured: ConfiguredCredentials = {
+    username: process.env.ADMIN_USERNAME,
+    password: process.env.ADMIN_PASSWORD,
+  },
+) {
+  return isAdminCredentials(credentials) &&
+    Boolean(configured.username && configured.password) &&
+    credentials.username === configured.username &&
+    credentials.password === configured.password;
+}
+
 export function createSession(username: string) {
   return `${username}.${createHmac("sha256", secret()).update(username).digest("hex")}`;
 }
