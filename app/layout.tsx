@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "P.E.A. | Faculty & Crew",
   description: "Meet the faculty and crew of Planet Express Academy.",
+  icons: {
+    icon: "/futurama-favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
