@@ -17,7 +17,7 @@ export default function AdminLogin({ error, onLogin }: AdminLoginProps) {
   }
 
   return (
-    <main className="admin-shell">
+    <main className="admin-shell" id="main-content" tabIndex={-1}>
       <form className="admin-login" onSubmit={submit}>
         <p className="eyebrow">Restricted area</p>
         <h1>Admin login</h1>
