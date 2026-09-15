@@ -92,9 +92,7 @@ export default function CharactersManager() {
       <header className="site-header">
         <Logo />
         <nav aria-label="Main navigation">
-          <a href="#about">About</a>
           <a href="#characters" aria-current="page">Characters</a>
-          <a href="#contact">Contact</a>
           <a href="/admin">Admin</a>
         </nav>
       </header>
