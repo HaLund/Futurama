@@ -74,7 +74,7 @@ export default function AdminManager() {
   }
 
   return (
-    <main className="admin-shell">
+    <main className="admin-shell" id="main-content" tabIndex={-1}>
       <div className="admin-heading">
         <div>
           <p className="eyebrow">Planet Express Academy</p>

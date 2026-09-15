@@ -18,6 +18,17 @@ body {
   font-family: "Trebuchet MS", Arial, sans-serif;
 }
 
+.skip-link {
+  background: var(--aqua);
+  color: #061515;
+  left: 16px;
+  padding: 10px 14px;
+  position: absolute;
+  top: -100px;
+  z-index: 10;
+}
+.skip-link:focus { top: 16px; }
+
 .site-header {
   align-items: center;
   background: linear-gradient(180deg, #080c15 0%, #050505 100%);

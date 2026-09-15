@@ -88,7 +88,7 @@ export default function CharactersManager() {
   };
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <header className="site-header">
         <Logo />
         <nav aria-label="Main navigation">

@@ -21,7 +21,7 @@ export default async function CharacterPage({ params }: CharacterPageProps) {
   }
 
   return (
-    <main>
+    <main id="main-content" tabIndex={-1}>
       <header className="site-header">
         <div className="logo" aria-label="Planet Express Academy">
           <span className="logo-rocket" aria-hidden="true">◢</span>
