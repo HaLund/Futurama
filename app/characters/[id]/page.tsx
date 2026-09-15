@@ -28,9 +28,7 @@ export default async function CharacterPage({ params }: CharacterPageProps) {
           <span>P.E.A</span>
         </div>
         <nav aria-label="Main navigation">
-          <a href="#about">About</a>
           <Link href="/#characters">Characters</Link>
-          <a href="#contact">Contact</a>
           <a href="/admin">Admin</a>
         </nav>
       </header>
