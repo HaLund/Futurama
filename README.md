@@ -10,8 +10,8 @@ The admin page supports creating, editing, and deleting characters. Changes are 
 
 ## Development
 
-(You may be able to skip some of the steps below, depending on what is already installed and configured on your system)
-Download Node from the Node.js website.
+(You may be able to skip some of the steps below, depending on what is already installed and configured on your system)<br>
+Download Node from the Node.js website.<br>
 Install Node on your computer.
 Verify in the terminal that both Node and npm have been installed by running "node -v" and "npm -v".
 Initialize the project with the command "npm init -y". If you prefer, you can skip the "-y" flag and answer the questions you are asked instead.
