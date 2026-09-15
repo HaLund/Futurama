@@ -55,6 +55,12 @@ nav a:hover, nav a:focus-visible { color: white; }
 
 .content { margin: 0 auto; max-width: 1250px; padding: 0 30px 42px; }
 .intro { padding: 0 0 32px; }
+.intro-header {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
 .eyebrow {
   color: var(--aqua);
   font-size: 12px;
@@ -64,6 +70,21 @@ nav a:hover, nav a:focus-visible { color: white; }
   text-transform: uppercase;
 }
 h1 { font-size: 30px; line-height: 1.1; margin: 0 0 9px; }
+.search-field { display: flex; justify-content: flex-end; margin-left: auto; }
+.search-field input {
+  background: #151515;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font: inherit;
+  min-width: min(100%, 300px);
+  padding: 10px 14px;
+}
+.search-field input::placeholder { color: #b7b3ab; }
+.search-field input:focus-visible {
+  border-color: var(--aqua);
+  outline: 2px solid rgba(23, 224, 208, 0.25);
+}
 .intro > p:last-child { color: var(--muted); font-size: 14px; margin: 0; }
 
 .character-grid {
@@ -170,6 +191,9 @@ h2 { font-size: 23px; line-height: 1.25; margin: 0 0 16px; min-height: 58px; }
   nav { gap: 16px; }
   nav a { font-size: 13px; }
   .content { padding: 0 16px 32px; }
+  .intro-header { align-items: flex-start; flex-direction: column; }
+  .search-field { width: 100%; justify-content: stretch; margin-left: 0; }
+  .search-field input { min-width: 100%; width: 100%; }
   .character-grid { grid-template-columns: 1fr; }
   .dossier-card { grid-template-columns: 1fr; }
   .dossier-image { min-height: 280px; }
