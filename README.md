@@ -8,6 +8,12 @@ By default, local development uses Windows authentication with the `SQLEXPRESS` 
 Set `SQL_USER` and `SQL_PASSWORD` to use SQL authentication instead.
 The admin page supports creating, editing, and deleting characters. Changes are persisted to `data/FuturamaCharacters.mdf` through the configured SQL Server instance.
 
+For Vercel, use a network-accessible SQL Server database and configure `SQL_SERVER`,
+`SQL_INSTANCE` (leave empty for a default instance), `SQL_DATABASE`, `SQL_USER`, and
+`SQL_PASSWORD` as Vercel environment variables. Vercel cannot use the local `.mdf` file
+or Windows authentication, so the database and `dbo.Characters` table must be available
+before deployment.
+
 ## Development
 
 Start the app with `npm run dev`. The startup hook clears Next.js' generated `.next` chunks to avoid stale `Cannot find module './611.js'` errors. If a server is already running, stop it before restarting.

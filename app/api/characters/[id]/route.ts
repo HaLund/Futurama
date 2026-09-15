@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { readCharacter } from "../../../../lib/characters";
 
+export const runtime = "nodejs";
+
 type CharacterRouteContext = {
   params: Promise<{ id: string }>;
 };

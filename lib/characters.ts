@@ -1,5 +1,5 @@
 import path from "node:path";
-import sql from "mssql/msnodesqlv8";
+import type { ConnectionPool } from "mssql";
 
 export type Character = {
   id: number;
@@ -11,7 +11,7 @@ export type Character = {
   image: string;
 };
 
-const databaseName = "FuturamaCharacters";
+const databaseName = process.env.SQL_DATABASE ?? "FuturamaCharacters";
 const mdfPath = path.join(process.cwd(), "data", "FuturamaCharacters.mdf");
 const sqlServer = process.env.SQL_SERVER ?? "localhost";
 const sqlInstance = process.env.SQL_INSTANCE ?? "SQLEXPRESS";
@@ -24,6 +24,7 @@ const hasSqlCredentials = Boolean(
   sqlUser !== "your-sql-login" &&
   sqlPassword !== "your-sql-password",
 );
+const useLocalDatabaseFile = !hasSqlCredentials && process.env.VERCEL !== "1";
 const connection = {
   server: sqlInstance ? `${sqlServer}\\${sqlInstance}` : sqlServer,
   database: databaseName,
@@ -36,7 +37,20 @@ const connection = {
   ...(hasSqlCredentials ? { user: sqlUser, password: sqlPassword } : {}),
 };
 
-let poolPromise: Promise<sql.ConnectionPool> | undefined;
+type SqlClient = typeof import("mssql");
+
+let sqlClientPromise: Promise<SqlClient> | undefined;
+let poolPromise: Promise<ConnectionPool> | undefined;
+
+async function getSqlClient(): Promise<SqlClient> {
+  if (!sqlClientPromise) {
+    sqlClientPromise = (hasSqlCredentials
+      ? import("mssql")
+      : import("mssql/msnodesqlv8")
+    ).then((module) => module.default);
+  }
+  return sqlClientPromise;
+}
 
 function asCharacter(row: Record<string, unknown>): Character {
   return {
@@ -53,17 +67,20 @@ function asCharacter(row: Record<string, unknown>): Character {
 async function connect() {
   if (!poolPromise) {
     poolPromise = (async () => {
-      const master = await new sql.ConnectionPool({ ...connection, database: "master" }).connect();
-      const escapedPath = mdfPath.replace(/'/g, "''");
-      const exists = await master.request()
-        .input("databaseName", sql.NVarChar, databaseName)
-        .query("SELECT DB_ID(@databaseName) AS id");
-      if (!exists.recordset[0]?.id) {
-        await master.request().query(
-          `CREATE DATABASE [${databaseName}] ON (FILENAME = N'${escapedPath}') FOR ATTACH_REBUILD_LOG`,
-        );
+      const sql = await getSqlClient();
+      if (useLocalDatabaseFile) {
+        const master = await new sql.ConnectionPool({ ...connection, database: "master" }).connect();
+        const escapedPath = mdfPath.replace(/'/g, "''");
+        const exists = await master.request()
+          .input("databaseName", sql.NVarChar, databaseName)
+          .query("SELECT DB_ID(@databaseName) AS id");
+        if (!exists.recordset[0]?.id) {
+          await master.request().query(
+            `CREATE DATABASE [${databaseName}] ON (FILENAME = N'${escapedPath}') FOR ATTACH_REBUILD_LOG`,
+          );
+        }
+        await master.close();
       }
-      await master.close();
 
       const pool = await new sql.ConnectionPool(connection).connect();
       await pool.request().query(`
@@ -101,6 +118,7 @@ export async function readCharacters(): Promise<Character[]> {
 }
 
 export async function readCharacter(id: number): Promise<Character | undefined> {
+  const sql = await getSqlClient();
   const result = await (await connect()).request()
     .input("id", sql.Int, id)
     .query("SELECT id, name, gender, status, species, createdAt, image FROM dbo.Characters WHERE id = @id");
@@ -108,6 +126,7 @@ export async function readCharacter(id: number): Promise<Character | undefined> 
 }
 
 export async function createCharacter(value: Omit<Character, "id">): Promise<Character> {
+  const sql = await getSqlClient();
   const result = await (await connect()).request()
     .input("name", sql.NVarChar(200), value.name)
     .input("gender", sql.NVarChar(20), value.gender)
@@ -127,6 +146,7 @@ export async function createCharacter(value: Omit<Character, "id">): Promise<Cha
 }
 
 export async function updateCharacter(value: Character): Promise<Character | undefined> {
+  const sql = await getSqlClient();
   const result = await (await connect()).request()
     .input("id", sql.Int, value.id)
     .input("Name", sql.NVarChar(200), value.name)
@@ -146,6 +166,7 @@ export async function updateCharacter(value: Character): Promise<Character | und
 }
 
 export async function deleteCharacter(id: number): Promise<boolean> {
+  const sql = await getSqlClient();
   const result = await (await connect()).request()
     .input("id", sql.Int, id)
     .query("DELETE FROM dbo.Characters WHERE id = @id");

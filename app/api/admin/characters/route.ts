@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { isAdmin } from "../../../../lib/auth";
 import { createCharacter, deleteCharacter, updateCharacter, type Character } from "../../../../lib/characters";
 
+export const runtime = "nodejs";
+
 function validCharacter(value: Partial<Character>) {
   return typeof value.name === "string" && value.name.trim() &&
     typeof value.image === "string" && value.image.trim() &&

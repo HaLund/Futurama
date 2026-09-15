@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { readCharacters } from "../../../lib/characters";
 
+export const runtime = "nodejs";
+
 export async function GET() {
   try {
     return NextResponse.json({ items: await readCharacters() });
