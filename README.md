@@ -64,5 +64,181 @@ Admin
 3. To edit a character, click the "Edit" button next to the character and change the values ​​you wish to adjust.
 4. To remove a character, click the "Delete" button next to the character.
 
-##How it works
+## How it works
+This is a Next.js/React app for browsing a Planet Express Academy-style directory of Futurama characters. It has:<br>
+- A public character catalogue
+- Free-text search
+- Pagination
+- Individual character dossier pages
+- A protected admin area for creating, editing, and deleting characters
+- SQL Server persistence backed by `data/FuturamaCharacters.mdf`
+
+
+
+The main public page is rendered by `app/page.tsx`, which mounts the client-side `CharactersManager`.
+
+## Public character catalogue
+
+When the home page loads:
+
+1. `CharactersManager` requests `GET /api/characters`.
+2. The API route in `app/api/characters/route.ts` reads all characters from the database.
+3. Characters are displayed as cards with:
+   - Image
+   - Name
+   - “View Dossier” link
+
+The catalogue displays eight characters per page. Pagination is stored in the URL as `?page=N`, so browser navigation and refreshes preserve the current page.
+
+The search box filters the already-loaded character list in the browser. It performs a case-insensitive substring search against:
+
+- Name
+- Gender
+- Status
+- Species
+
+Typing a new search resets the page to page 1. If filtering makes the current page invalid, the app adjusts the URL and page state to the last valid page.
+
+The styling and responsive layout are defined in `app/globals.css`.
+
+## Character dossier pages
+
+Each card links to `/characters/[id]`, handled by `app/characters/[id]/page.tsx`.
+
+The page:
+
+1. Parses the route ID.
+2. Rejects invalid IDs with Next.js `notFound()`.
+3. Reads the matching character from the database.
+4. Also returns `notFound()` if no character exists.
+5. Passes the character to `CharacterDossier`.
+
+The tagged `CharacterDossier` component is presentational. It renders:
+
+- A “Back to characters” link pointing to `/#characters`
+- The character image
+- The character name
+- Name, gender, status, and species details
+
+It receives one strongly typed `Character` object and does not fetch data or maintain local state itself. Its data comes from `lib/characters.ts`.
+
+## Database layer
+
+The shared database code is in `lib/characters.ts`.
+
+It uses `mssql/msnodesqlv8` and defaults to:
+
+- SQL Server: `localhost`
+- Instance: `SQLEXPRESS`
+- Windows authentication
+- Database: `FuturamaCharacters`
+- MDF file: `data/FuturamaCharacters.mdf`
+
+On first connection, the app:
+
+1. Connects to the SQL Server `master` database.
+2. Attaches the MDF file if the database does not already exist.
+3. Connects to the application database.
+4. Creates the `dbo.Characters` table if necessary.
+5. Ensures the `image` column supports large values.
+
+The character record contains:
+
+```text
+id
+name
+gender
+status
+species
+createdAt
+image
+```
+
+The database functions support reading all characters, reading one character, creating, updating, and deleting.
+
+## Admin area
+
+The `/admin` route mounts `AdminManager`.
+
+Initially it shows the login form from `admin-login.tsx`. Credentials are checked by `POST /api/admin/login` against `ADMIN_USERNAME` and `ADMIN_PASSWORD`.
+
+On successful login:
+
+- The server creates an HMAC-signed HTTP-only cookie.
+- The browser switches to the admin dashboard.
+- The session lasts up to eight hours.
+
+Session logic is implemented in `lib/auth.ts`.
+
+The admin dashboard allows the user to:
+
+- Add a character
+- Edit an existing character
+- Delete a character
+- Sign out
+- Reload the current character list after each mutation
+
+The editor in `character-editor.tsx` provides:
+
+- Name input
+- Gender selection
+- Status selection
+- Species selection
+- Image upload
+- Client-side image type validation
+- A 5 MB image-size limit
+- Image preview
+
+Images are converted to data URLs in the browser and stored directly in the database as text.
+
+The admin API in `app/api/admin/characters/route.ts` protects create, update, and delete operations with the signed session cookie.
+
+## Overall request flow
+
+```text
+Browser
+  |
+  | GET /
+  v
+CharactersManager
+  |
+  | GET /api/characters
+  v
+Next.js API route
+  |
+  v
+SQL Server / FuturamaCharacters.mdf
+```
+
+For a dossier:
+
+```text
+/characters/42
+  |
+  v
+Server-rendered CharacterPage
+  |
+  v
+readCharacter(42)
+  |
+  v
+CharacterDossier
+```
+
+For administration:
+
+```text
+/admin
+  |
+  v
+AdminManager
+  |
+  +-- POST /api/admin/login
+  +-- POST /api/admin/characters
+  +-- PUT  /api/admin/characters
+  +-- DELETE /api/admin/characters?id=...
+  +-- POST /api/admin/logout
+```
+
+The app’s configured environment variables and startup instructions are documented in `README.md`.
 
