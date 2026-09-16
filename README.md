@@ -10,6 +10,20 @@ End user:
 Admin:
 ![Demo of Futurama](https://github.com/HaLund/Futurama/blob/main/demo_futurama_admin.gif)
 
+## Features
+- 🔎 Search for Futurama characters
+- 🎬 Show detailed information
+- 📱 Responsive design
+
+## Technologies
+- HTML
+- CSS
+- TypeScript
+- React
+- Next.js
+- SQL-Server
+- Git
+- GitHub
 
 ## Admin
 
