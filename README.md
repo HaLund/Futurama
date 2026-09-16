@@ -59,9 +59,10 @@ Search
 2. Click on one of the displayed characters to go to the details page.
 
 Admin
-1. Log in using the default credentials: username "admin", password "admin1234".
+1. Log in using the default credentials.
 2. To create a new character, upload an image, fill in the name, gender, status, and species, and click the "Create character" button.
 3. To edit a character, click the "Edit" button next to the character and change the values ​​you wish to adjust.
 4. To remove a character, click the "Delete" button next to the character.
 
+##How it works
 
