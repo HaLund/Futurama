@@ -1,6 +1,9 @@
 # Futurama
 The Futurama App is an app for finding Futurama characters by filtering by gender, status, species, and name (free-text search).
 
+<img width="1228" height="917" alt="Futurama" src="https://github.com/user-attachments/assets/c134ba55-e141-4fe1-99a4-568d2e170ec5" />
+![Screenshot av Movie Explorer](https://github.com/user-attachments/assets/c134ba55-e141-4fe1-99a4-568d2e170ec5)
+
 ## Admin
 
 Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.
