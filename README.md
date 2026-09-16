@@ -26,6 +26,8 @@ Admin:
 - Git
 - GitHub
 
+The app is a Next.js 15 application using React 19.
+
 ## Installation
 1. Clone the repository:
 git clone
@@ -241,4 +243,180 @@ AdminManager
 ```
 
 The app’s configured environment variables and startup instructions are documented in `README.md`.
+
+## Required runtime
+
+### 1. Node.js and npm
+
+The app is a Next.js 15 application using React 19.
+
+Install:
+
+- Node.js — Node 22 LTS is recommended
+- npm — the project uses `package-lock.json`
+
+The dependency versions are defined in `package.json`, including:
+
+- `next`
+- `react`
+- `react-dom`
+- `mssql`
+- `msnodesqlv8`
+- TypeScript
+- Vitest
+
+Install dependencies from the repository root:
+
+```powershell
+npm ci
+```
+
+The application should be run from:
+
+```text
+C:\Users\hanne\My-Code\Futurama-Test\Futurama
+```
+
+### 2. SQL Server
+
+The app requires a reachable Microsoft SQL Server instance because character data is loaded from SQL Server on both the public and admin routes.
+
+The default configuration expects:
+
+```text
+Server: localhost
+Instance: SQLEXPRESS
+Database: FuturamaCharacters
+```
+
+The default local setup uses Windows authentication. Therefore, the usual local requirement is:
+
+- SQL Server Express installed
+- A running `SQLEXPRESS` instance
+- Windows account access to that instance
+- The SQL Server service account able to access the repository’s `data` directory
+
+The app uses the native `msnodesqlv8` SQL driver, so this is primarily a Windows-oriented setup.
+
+### 3. ODBC driver
+
+The default configuration expects:
+
+```text
+ODBC Driver 17 for SQL Server
+```
+
+This driver must be installed and available to the Node SQL client. It can be changed with `SQL_DRIVER`.
+
+### 4. Database file
+
+The repository contains:
+
+```text
+data\FuturamaCharacters.mdf
+```
+
+On the first database connection, `lib/characters.ts` checks whether the `FuturamaCharacters` database exists. If it does not, it attaches the MDF file and rebuilds its log.
+
+The SQL Server instance therefore needs permission to:
+
+- Read the MDF file
+- Attach the database
+- Create or modify the `dbo.Characters` table
+
+The app creates the table automatically if it is missing.
+
+### 5. Environment configuration
+
+Create `.env.local` from `.env.example`:
+
+```powershell
+Copy-Item .env.example .env.local
+```
+
+At minimum, set non-placeholder admin credentials:
+
+```env
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=use-a-long-random-password
+```
+
+Default local SQL configuration:
+
+```env
+SQL_SERVER=localhost
+SQL_INSTANCE=SQLEXPRESS
+SQL_DRIVER=ODBC Driver 17 for SQL Server
+```
+
+For SQL authentication instead of Windows authentication:
+
+```env
+SQL_USER=your-sql-login
+SQL_PASSWORD=your-sql-password
+```
+
+The current implementation treats `SQL_USER` and `SQL_PASSWORD` as enabled only when they are real values rather than the placeholder values in the template.
+
+Although `SQL_DATABASE` appears in `.env.example`, the current database module hardcodes the database name as `FuturamaCharacters`; changing `SQL_DATABASE` alone does not change the database used.
+
+## Starting the app
+
+Development mode:
+
+```powershell
+npm run dev
+```
+
+Then open:
+
+```text
+http://localhost:3000
+```
+
+The development script clears Next.js’ `.next` directory before starting.
+
+Production-style execution:
+
+```powershell
+npm run build
+npm start
+```
+
+The available scripts are defined in `package.json`.
+
+## Browser requirements
+
+A modern browser with JavaScript enabled is required. The client-side catalogue uses:
+
+- `fetch`
+- React state and effects
+- URL history APIs
+- FileReader for admin image uploads
+- Browser confirmation dialogs for deletion
+
+The public catalogue can be viewed without authentication. The `/admin` area requires the configured credentials.
+
+## Network and permissions
+
+The application server must be able to:
+
+- Listen on the chosen Next.js port, normally `3000`
+- Connect to the configured SQL Server instance
+- Read and attach `data/FuturamaCharacters.mdf`
+- Create, update, and delete rows in `dbo.Characters`
+
+For remote SQL Server use, configure `SQL_SERVER`, optionally leave `SQL_INSTANCE` empty for a default instance, provide SQL credentials, and ensure SQL Server network access and firewall rules permit the connection.
+
+## Optional testing tools
+
+Tests can be run with:
+
+```powershell
+npm test
+```
+
+TypeScript and test dependencies are installed as development dependencies. The application itself does not require a separate frontend database or external API; its character data comes from the configured SQL Server database.
+
+
 
