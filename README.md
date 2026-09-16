@@ -26,6 +26,12 @@ Admin:
 - Git
 - GitHub
 
+## Usage
+End user
+
+
+Admin
+
 ## Admin
 
 Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.
