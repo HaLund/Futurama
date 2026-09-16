@@ -1,7 +1,7 @@
 # Futurama
 The Futurama App is an app for finding Futurama characters by filtering by gender, status, species, and name (free-text search).
 
-<img width="1233" height="898" alt="Futurama" src="https://github.com/user-attachments/assets/42b1e32c-f318-4f85-8573-d8c05cfb94e6" />
+<img width="1891" height="903" alt="Futurama" src="https://github.com/user-attachments/assets/ba30d9b9-0838-4572-9a0c-a16973f64aeb" />
 
 ## Admin
 
