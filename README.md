@@ -29,15 +29,28 @@ Admin:
 ## Installation
 1. Clone the repository:
 git clone
-
 2. Go to the project folder:
 cd futurama
-
 3. Install dependencies:
 npm install
-
 4. Start the development server:
 npm run dev
+
+In detail:
+(You may be able to skip some of the steps below, depending on what is already installed and configured on your system)<br>
+Download Node from the Node.js website.<br>
+Install Node on your computer.<br>
+Verify in the terminal that both Node and npm have been installed by running "node -v" and "npm -v".<br>
+Initialize the project with the command "npm init -y". If you prefer, you can skip the "-y" flag and answer the questions you are asked instead.<br>
+Install TypeScript in the project with "npm install typescript --save-dev"<br>
+Configure TypeScript with "npx tsc --init"<br>
+Start the app with `npm run dev`. The startup hook clears Next.js' generated `.next` chunks to avoid stale `Cannot find module './611.js'` errors. If a server is already running, stop it before restarting.
+
+Log in as administrator:
+Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.
+By default, local development uses Windows authentication with the `SQLEXPRESS` instance.
+Specify `SQL_USER` and `SQL_PASSWORD` to use SQL authentication instead if you want to run the app on a Linux server.
+The admin page supports creating, editing, and deleting characters. Changes are persisted to `data/FuturamaCharacters.mdf` through the configured SQL Server instance.
 
 ## Usage
 End user
@@ -51,20 +64,4 @@ Admin
 3. To edit a character, click the "Edit" button next to the character and change the values ​​you wish to adjust.
 4. To remove a character, click the "Delete" button next to the character.
 
-## Admin
 
-Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.
-By default, local development uses Windows authentication with the `SQLEXPRESS` instance.
-Set `SQL_USER` and `SQL_PASSWORD` to use SQL authentication instead.
-The admin page supports creating, editing, and deleting characters. Changes are persisted to `data/FuturamaCharacters.mdf` through the configured SQL Server instance.
-
-## Development
-
-(You may be able to skip some of the steps below, depending on what is already installed and configured on your system)<br>
-Download Node from the Node.js website.<br>
-Install Node on your computer.<br>
-Verify in the terminal that both Node and npm have been installed by running "node -v" and "npm -v".<br>
-Initialize the project with the command "npm init -y". If you prefer, you can skip the "-y" flag and answer the questions you are asked instead.<br>
-Install TypeScript in the project with "npm install typescript --save-dev"<br>
-Configure TypeScript with "npx tsc --init"<br>
-Start the app with `npm run dev`. The startup hook clears Next.js' generated `.next` chunks to avoid stale `Cannot find module './611.js'` errors. If a server is already running, stop it before restarting.
