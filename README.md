@@ -4,6 +4,10 @@ The Futurama App is an app for finding Futurama characters by filtering by gende
 <img width="1891" height="903" alt="Futurama" src="https://github.com/user-attachments/assets/1f07dc7b-dce2-4fa1-ab72-02eb3b665f06" />
 
 ## Demo
+End user:
+![Demo of Futurama](https://github.com/HaLund/Futurama/blob/main/demo_futurama_end_user.gif)
+
+Admin:
 ![Demo of Futurama](https://github.com/HaLund/Futurama/blob/main/demo_futurama_admin.gif)
 
 
