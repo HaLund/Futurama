@@ -27,8 +27,8 @@ Admin:
 - GitHub
 
 ## Usage
-End user:
-Search:
+End user
+Search
 1. Start searching for a character by typing a letter. The more letters you type, the more precise the match becomes.
 2. Click on one of the displayed characters to go to the details page.
 
