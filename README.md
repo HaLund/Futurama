@@ -38,19 +38,19 @@ npm run dev
 
 In detail:
 (You may be able to skip some of the steps below, depending on what is already installed and configured on your system)<br>
-Download Node from the Node.js website.<br>
-Install Node on your computer.<br>
-Verify in the terminal that both Node and npm have been installed by running "node -v" and "npm -v".<br>
-Initialize the project with the command "npm init -y". If you prefer, you can skip the "-y" flag and answer the questions you are asked instead.<br>
-Install TypeScript in the project with "npm install typescript --save-dev"<br>
-Configure TypeScript with "npx tsc --init"<br>
-Start the app with `npm run dev`. The startup hook clears Next.js' generated `.next` chunks to avoid stale `Cannot find module './611.js'` errors. If a server is already running, stop it before restarting.
+1. Download Node from the Node.js website.
+2. Install Node on your computer.
+3. Verify in the terminal that both Node and npm have been installed by running "node -v" and "npm -v".
+4. Initialize the project with the command "npm init -y". If you prefer, you can skip the "-y" flag and answer the questions you are asked instead.
+5. Install TypeScript in the project with "npm install typescript --save-dev"
+6. Configure TypeScript with "npx tsc --init"
+7. Start the app with `npm run dev`. The startup hook clears Next.js' generated `.next` chunks to avoid stale `Cannot find module './611.js'` errors. If a server is already running, stop it before restarting.
 
-Log in as administrator:
-Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.
-By default, local development uses Windows authentication with the `SQLEXPRESS` instance.
-Specify `SQL_USER` and `SQL_PASSWORD` to use SQL authentication instead if you want to run the app on a Linux server.
-The admin page supports creating, editing, and deleting characters. Changes are persisted to `data/FuturamaCharacters.mdf` through the configured SQL Server instance.
+Log in as administrator:<br>
+1. Copy `.env.example` to `.env.local`, set the admin credentials, then open `/admin`.<br>
+2. By default, local development uses Windows authentication with the `SQLEXPRESS` instance.<br>
+3. Specify `SQL_USER` and `SQL_PASSWORD` to use SQL authentication instead if you want to run the app on a Linux server.<br>
+4. The admin page supports creating, editing, and deleting characters. Changes are persisted to `data/FuturamaCharacters.mdf` through the configured SQL Server instance.<br>
 
 ## Usage
 End user
