@@ -14,6 +14,7 @@ Admin:
 - 🔎 Search for Futurama characters
 - 🎬 Show detailed information
 - 📱 Responsive design
+- 🖋️ Create, Update and Delete characters (admin)
 
 ## Technologies
 - HTML
