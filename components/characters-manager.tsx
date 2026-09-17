@@ -127,7 +127,7 @@ export default function CharactersManager() {
           {visibleCharacters.map((character) => (
             <article className="character-card" key={character.id}>
               <div className="image-frame">
-                <img src={character.image} alt="" loading="lazy" />
+                <img src={character.image} alt={character.name} loading="lazy" />
               </div>
               <div className="card-body">
                 <h2>{character.name}</h2>
