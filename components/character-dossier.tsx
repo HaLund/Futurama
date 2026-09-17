@@ -11,7 +11,7 @@ export default function CharacterDossier({ character }: CharacterDossierProps) {
       <Link className="back-link" href="/#characters">← Back to characters</Link>
       <div className="dossier-card">
         <div className="dossier-image">
-          <img src={character.image} alt="" />
+          <img src={character.image} alt={character.name} />
         </div>
         <div className="dossier-body">
           <p className="eyebrow">Planet Express Academy</p>
